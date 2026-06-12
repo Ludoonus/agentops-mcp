@@ -14,7 +14,7 @@ from datetime import timedelta
 from mcp.server.fastmcp import FastMCP
 
 from .engine.audit import analyze_audit
-from .engine.cost import analyze_cost, blended_dollars
+from .engine.cost import analyze_cost, blended_dollars, by_day
 from .engine.efficiency import analyze_efficiency
 from .engine.safety import analyze_safety
 from .engine.transcripts import load_sessions, now_utc
@@ -47,6 +47,22 @@ def cost_summary(days: int = 30, project: str | None = None) -> dict:
         "top_tools_by_result_tokens": [
             {"tool": n, "tokens": t, "calls": c.by_tool_calls[n]}
             for n, t in c.by_tool_result.most_common(8)
+        ],
+    }
+
+
+@mcp.tool()
+def cost_trend(days: int = 30, project: str | None = None) -> dict:
+    """Per-day Claude Code cost trend: output tokens and est. dollars by calendar day,
+    so you can spot spend spikes over time."""
+    s = _sessions(days, project)
+    if not s:
+        return {"error": "no sessions in window"}
+    return {
+        "window_days": days,
+        "by_day": [
+            {"date": d, "output_tokens": tok, "est_usd": round(dol, 2)}
+            for d, tok, dol in by_day(s)
         ],
     }
 
