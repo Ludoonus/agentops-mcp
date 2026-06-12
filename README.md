@@ -51,6 +51,11 @@ leaves your machine; the server only reads.
 - [cc-powerpack](https://github.com/Ludoonus/cc-powerpack) — guardrail hooks that *prevent*
   the dangerous actions this server reports.
 
+
+## Go deeper
+
+These tools are the practical layer; [**The Claude Code Operator's Handbook**](https://ludoonus.github.io/cc-powerpack/handbook/) is the full playbook — 18 chapters on running AI coding agents safely and efficiently (threat model, guardrails, cost, workflows, recovery, scaling). $29, with a free 3-chapter sample.
+
 ## License
 
 MIT.
